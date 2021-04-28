@@ -17,10 +17,30 @@ module.exports.eastablishDBConn = () => {
 }
 
 
-module.exports.createUser = (userRequest) => {
+module.exports.createUser = (signupRequest) => {
     return new Promise((resolve, reject) => {
-        console.log(userRequest.body.userID)
-        var sql = "INSERT INTO userDetail (username, password, fname, mname, lname, userID) VALUES (userRequest.body.username,userRequest.body.password, userRequest.body.fname, userRequest.body.mname, userRequest.body.lname, userRequest.body.userID";
+        console.log(signupRequest.body.userID)
+
+        let sql = "INSERT INTO userDetail (username, password, fname, mname, lname, userID) VALUES (?,?,?,?,?,?)";
+        let input=[signupRequest.body.username,signupRequest.body.password, signupRequest.body.fname, signupRequest.body.mname, signupRequest.body.lname, signupRequest.body.userID]
+        
+        dbConnection.query(sql,input, function (err, result) {
+            if (err) {
+                reject(err);
+            }
+            else {
+                resolve(result);
+            }
+        });
+    })
+}
+
+module.exports.findUser = (loginRequest) => {
+    return new Promise((resolve, reject) => {
+        console.log(loginRequest.body.userID)
+        
+        let sql = "SELECT * FROM userDetail WHERE username=? and password=?";
+        let parameter=[loginRequest.body.username,loginRequest.body.password]
         dbConnection.query(sql, function (err, result) {
             if (err) {
                 reject(err);
@@ -36,3 +56,4 @@ module.exports.createUser = (userRequest) => {
 module.exports.createID =()=>{
     return crypto.randomBytes(4).toString('hex')
 }
+

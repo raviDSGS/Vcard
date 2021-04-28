@@ -1,20 +1,16 @@
 const express = require('express');
 const router = express.Router();
 
-const {createUser,createID} = require('./functionality')
+// const {createUser,createID,findUser} = require('./functionality')
+const {login,signup} = require('./middleware')
 
 router.post('/signup',(req,res)=>{
     req.body.userID=createID();
-    createUser(req).then((response)=>{
-        res.send(response)
-    })
-    .catch((err)=>{
-        res.sendStatus(500)
-    })
+    res.send(signup(req))
 })
 
 router.post('/login',(req,res,next)=>{
-
+    res.send(login(req));
 })
 
 router.post('/user',(req,res,next)=>{
