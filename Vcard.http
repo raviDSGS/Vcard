@@ -1,0 +1,9 @@
+POST http://localhost:7000/api/v1/login
+content-type: application/json
+
+{
+    "username":"ravi5588@gmail.com",
+    "password":"secretcode"
+}
+###
+GET http://localhost:7000/api/v1/user
