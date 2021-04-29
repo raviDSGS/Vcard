@@ -1,33 +1,36 @@
-const {createUser,createID,findUser} = require('./functionality')
+const {createUser,findUser,} = require('./functionality')
 
-async function signup(signupRequest){
+async function signup(req,res,next){
     try{
-        let result = await createUser(signupRequest);
-        return("User created"+result)
+        req.body.userID=createID();
+        let result = await createUser(req);
+        res.send("User Created")
+        //return("User created"+result)
     }
     catch(err){
-        return "Error occured while creating new user"+err;
-
+        next(err);
+     // return "Error occured while creating new user"+err;
     }
 }
 
 
-async function login(loginRequest){
+async function login(req,res,next){
     try{
-        let result = await findUser(loginRequest);
+        let result = await findUser(req);
         if(result.length){
-            return "User Find";
+            res.send("User Found")
             //call JWT function
         }
         else{
-            return "Invalid username/password";
+            res.send("User not found")
         }
     }
     catch(err){
-        return "Error Occured"+err;
+        next(err);
     }
 }
 
 
 module.exports.login = login;
+module.exports.signup = signup;
 
